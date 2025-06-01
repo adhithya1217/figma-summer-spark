@@ -55,11 +55,11 @@ export const EventManager = () => {
   };
 
   return (
-    <Card className="h-fit bg-[#F2F2F2] border-[#B6B09F] transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+    <Card className="h-fit bg-[#F2F2F2] border-[#B6B09F] transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-[#000000]">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-[#000000]">
-            <CalendarIcon className="h-5 w-5" />
+            <CalendarIcon className="h-5 w-5 transition-transform duration-200 hover:scale-110" />
             Events
           </CardTitle>
           <Dialog open={isDialogOpen} onOpenChange={(open) => {
@@ -69,9 +69,9 @@ export const EventManager = () => {
             <DialogTrigger asChild>
               <Button 
                 size="sm" 
-                className="bg-[#EAE4D5] text-[#000000] hover:bg-[#B6B09F] transition-all duration-200 hover:scale-105"
+                className="bg-[#EAE4D5] text-[#000000] hover:bg-[#B6B09F] hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg transform"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 transition-transform duration-200 group-hover:rotate-90" />
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-[#F2F2F2] border-[#B6B09F]">
@@ -85,13 +85,13 @@ export const EventManager = () => {
                   placeholder="Event title"
                   value={eventTitle}
                   onChange={(e) => setEventTitle(e.target.value)}
-                  className="bg-white border-[#B6B09F] focus:border-[#000000] transition-colors"
+                  className="bg-white border-[#B6B09F] focus:border-[#000000] transition-all duration-200 hover:border-[#B6B09F] hover:shadow-md"
                 />
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button 
                       variant="outline" 
-                      className="w-full justify-start bg-white border-[#B6B09F] hover:bg-[#EAE4D5] transition-colors"
+                      className="w-full justify-start bg-white border-[#B6B09F] hover:bg-[#EAE4D5] hover:border-[#000000] transition-all duration-200 hover:shadow-md"
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {format(eventDate, "PPP")}
@@ -110,11 +110,11 @@ export const EventManager = () => {
                   type="time"
                   value={eventTime}
                   onChange={(e) => setEventTime(e.target.value)}
-                  className="bg-white border-[#B6B09F] focus:border-[#000000] transition-colors"
+                  className="bg-white border-[#B6B09F] focus:border-[#000000] transition-all duration-200 hover:border-[#B6B09F] hover:shadow-md"
                 />
                 <Button 
                   type="submit" 
-                  className="w-full bg-[#000000] text-[#F2F2F2] hover:bg-[#B6B09F] hover:text-[#000000] transition-all duration-200"
+                  className="w-full bg-[#000000] text-[#F2F2F2] hover:bg-[#B6B09F] hover:text-[#000000] transition-all duration-300 hover:scale-105 hover:shadow-lg transform"
                 >
                   {editingEvent ? "Update Event" : "Add Event"}
                 </Button>
@@ -130,9 +130,9 @@ export const EventManager = () => {
         <div className="space-y-2 max-h-64 overflow-y-auto">
           {events.length === 0 ? (
             <div className="text-center py-8 text-[#B6B09F] animate-fade-in">
-              <CalendarIcon className="h-12 w-12 mx-auto mb-2 opacity-50" />
-              <p>No upcoming events</p>
-              <p className="text-sm mt-1">Click the + button to add your first event</p>
+              <CalendarIcon className="h-12 w-12 mx-auto mb-2 opacity-50 transition-all duration-300 hover:opacity-80 hover:scale-110" />
+              <p className="transition-colors duration-200">No upcoming events</p>
+              <p className="text-sm mt-1 transition-colors duration-200">Click the + button to add your first event</p>
             </div>
           ) : (
             events
@@ -140,24 +140,24 @@ export const EventManager = () => {
               .map((event, index) => (
                 <div
                   key={event.id}
-                  className="p-3 bg-[#EAE4D5] rounded-lg border border-[#B6B09F] group hover:bg-[#B6B09F] transition-all duration-300 hover:scale-[1.02] hover:shadow-md animate-slide-down"
+                  className="p-3 bg-[#EAE4D5] rounded-lg border border-[#B6B09F] group hover:bg-[#B6B09F] hover:border-[#000000] transition-all duration-300 hover:scale-[1.03] hover:shadow-lg transform cursor-pointer animate-slide-down"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-[#000000] group-hover:text-white transition-colors">
+                    <div className="flex-1 transition-all duration-200">
+                      <h4 className="font-medium text-[#000000] group-hover:text-white transition-all duration-200 group-hover:font-semibold">
                         {event.title}
                       </h4>
-                      <p className="text-sm text-[#B6B09F] group-hover:text-[#F2F2F2] transition-colors">
+                      <p className="text-sm text-[#B6B09F] group-hover:text-[#F2F2F2] transition-all duration-200">
                         {format(event.date, "MMM dd, yyyy")} at {event.time}
                       </p>
                     </div>
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                       <Button
                         size="sm"
                         variant="ghost"
                         onClick={() => handleEdit(event)}
-                        className="h-8 w-8 p-0 hover:bg-[#F2F2F2] hover:text-[#000000] transition-all duration-200 hover:scale-110"
+                        className="h-8 w-8 p-0 hover:bg-[#F2F2F2] hover:text-[#000000] transition-all duration-200 hover:scale-125 transform hover:rotate-12"
                       >
                         <Edit className="h-3 w-3" />
                       </Button>
@@ -165,7 +165,7 @@ export const EventManager = () => {
                         size="sm"
                         variant="ghost"
                         onClick={() => handleDelete(event.id)}
-                        className="h-8 w-8 p-0 hover:bg-red-500 hover:text-white transition-all duration-200 hover:scale-110"
+                        className="h-8 w-8 p-0 hover:bg-red-500 hover:text-white transition-all duration-200 hover:scale-125 transform hover:rotate-12"
                       >
                         <Trash2 className="h-3 w-3" />
                       </Button>
