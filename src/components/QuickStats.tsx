@@ -23,14 +23,18 @@ export const QuickStats = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Active Tasks</CardTitle>
-          <ListTodo className="h-4 w-4 text-muted-foreground" />
+      <Card className="bg-[#F2F2F2] border-[#B6B09F] transition-all duration-300 hover:shadow-xl hover:scale-[1.05] hover:border-[#000000] group cursor-pointer transform">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <CardTitle className="text-sm font-medium text-[#000000] group-hover:font-semibold transition-all duration-200">
+            Active Tasks
+          </CardTitle>
+          <ListTodo className="h-4 w-4 text-[#B6B09F] group-hover:text-[#000000] group-hover:scale-110 transition-all duration-200" />
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{activeTodosForDate.length}</div>
-          <p className="text-xs text-muted-foreground">
+        <CardContent className="group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <div className="text-2xl font-bold text-[#000000] group-hover:text-[#000000] transition-all duration-200">
+            {activeTodosForDate.length}
+          </div>
+          <p className="text-xs text-[#B6B09F] group-hover:text-[#000000] transition-all duration-200">
             {selectedDate.toDateString() === new Date().toDateString() 
               ? `${activeTodosForDate.length} due today`
               : `for ${selectedDate.toLocaleDateString()}`
@@ -39,14 +43,18 @@ export const QuickStats = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Completed Tasks</CardTitle>
-          <Calendar className="h-4 w-4 text-muted-foreground" />
+      <Card className="bg-[#F2F2F2] border-[#B6B09F] transition-all duration-300 hover:shadow-xl hover:scale-[1.05] hover:border-[#000000] group cursor-pointer transform">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <CardTitle className="text-sm font-medium text-[#000000] group-hover:font-semibold transition-all duration-200">
+            Completed Tasks
+          </CardTitle>
+          <Calendar className="h-4 w-4 text-[#B6B09F] group-hover:text-[#000000] group-hover:scale-110 transition-all duration-200" />
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{completedTodosForDate.length}</div>
-          <p className="text-xs text-muted-foreground">
+        <CardContent className="group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <div className="text-2xl font-bold text-[#000000] group-hover:text-[#000000] transition-all duration-200">
+            {completedTodosForDate.length}
+          </div>
+          <p className="text-xs text-[#B6B09F] group-hover:text-[#000000] transition-all duration-200">
             {selectedDate.toDateString() === new Date().toDateString() 
               ? `completed today`
               : `on ${selectedDate.toLocaleDateString()}`
@@ -55,14 +63,18 @@ export const QuickStats = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Notes</CardTitle>
-          <StickyNote className="h-4 w-4 text-muted-foreground" />
+      <Card className="bg-[#F2F2F2] border-[#B6B09F] transition-all duration-300 hover:shadow-xl hover:scale-[1.05] hover:border-[#000000] group cursor-pointer transform">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <CardTitle className="text-sm font-medium text-[#000000] group-hover:font-semibold transition-all duration-200">
+            Notes
+          </CardTitle>
+          <StickyNote className="h-4 w-4 text-[#B6B09F] group-hover:text-[#000000] group-hover:scale-110 transition-all duration-200" />
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{notesForDate.length}</div>
-          <p className="text-xs text-muted-foreground">
+        <CardContent className="group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <div className="text-2xl font-bold text-[#000000] group-hover:text-[#000000] transition-all duration-200">
+            {notesForDate.length}
+          </div>
+          <p className="text-xs text-[#B6B09F] group-hover:text-[#000000] transition-all duration-200">
             {selectedDate.toDateString() === new Date().toDateString() 
               ? `notes for today`
               : `for ${selectedDate.toLocaleDateString()}`
@@ -71,14 +83,18 @@ export const QuickStats = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Upcoming Events</CardTitle>
-          <CalendarDays className="h-4 w-4 text-muted-foreground" />
+      <Card className="bg-[#F2F2F2] border-[#B6B09F] transition-all duration-300 hover:shadow-xl hover:scale-[1.05] hover:border-[#000000] group cursor-pointer transform">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <CardTitle className="text-sm font-medium text-[#000000] group-hover:font-semibold transition-all duration-200">
+            Upcoming Events
+          </CardTitle>
+          <CalendarDays className="h-4 w-4 text-[#B6B09F] group-hover:text-[#000000] group-hover:scale-110 transition-all duration-200" />
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{upcomingEvents.length}</div>
-          <p className="text-xs text-muted-foreground">
+        <CardContent className="group-hover:bg-[#EAE4D5] transition-all duration-200">
+          <div className="text-2xl font-bold text-[#000000] group-hover:text-[#000000] transition-all duration-200">
+            {upcomingEvents.length}
+          </div>
+          <p className="text-xs text-[#B6B09F] group-hover:text-[#000000] transition-all duration-200">
             {nextEvent ? `Next: ${nextEvent.title}` : 'No upcoming events'}
           </p>
         </CardContent>
