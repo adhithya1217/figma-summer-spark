@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface TodoItem {
@@ -37,6 +36,8 @@ interface DashboardContextType {
   addTodo: (text: string, dueDate: Date) => void;
   addNote: (title: string, content: string, date: Date) => void;
   addEvent: (title: string, date: Date, time: string) => void;
+  updateEvent: (id: string, title: string, date: Date, time: string) => void;
+  deleteEvent: (id: string) => void;
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
@@ -100,20 +101,7 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
     },
   ]);
 
-  const [events, setEvents] = useState<EventItem[]>([
-    {
-      id: '1',
-      title: 'Team Meeting',
-      date: new Date(Date.now() + 86400000), // Tomorrow
-      time: '2:00 PM'
-    },
-    {
-      id: '2',
-      title: 'Project Deadline',
-      date: new Date(Date.now() + 4 * 86400000), // 4 days from now
-      time: '5:00 PM'
-    }
-  ]);
+  const [events, setEvents] = useState<EventItem[]>([]);
 
   const addTodo = (text: string, dueDate: Date) => {
     const newTodo: TodoItem = {
@@ -148,6 +136,18 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
     setEvents([newEvent, ...events]);
   };
 
+  const updateEvent = (id: string, title: string, date: Date, time: string) => {
+    setEvents(events.map(event => 
+      event.id === id 
+        ? { ...event, title: title.trim(), date, time }
+        : event
+    ));
+  };
+
+  const deleteEvent = (id: string) => {
+    setEvents(events.filter(event => event.id !== id));
+  };
+
   return (
     <DashboardContext.Provider
       value={{
@@ -162,6 +162,8 @@ export const DashboardProvider: React.FC<DashboardProviderProps> = ({ children }
         addTodo,
         addNote,
         addEvent,
+        updateEvent,
+        deleteEvent,
       }}
     >
       {children}
