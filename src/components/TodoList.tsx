@@ -4,33 +4,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Plus, ListTodo } from "lucide-react";
-
-interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+import { Plus, ListTodo, Calendar } from "lucide-react";
+import { useDashboard } from "@/contexts/DashboardContext";
 
 export const TodoList = () => {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: '1', text: 'Review project proposals', completed: false, createdAt: new Date() },
-    { id: '2', text: 'Call client about feedback', completed: true, createdAt: new Date() },
-    { id: '3', text: 'Update portfolio website', completed: false, createdAt: new Date() },
-  ]);
+  const { selectedDate, todos, setTodos, addTodo } = useDashboard();
   const [newTodo, setNewTodo] = useState('');
+  const [newTodoDueDate, setNewTodoDueDate] = useState(selectedDate.toISOString().split('T')[0]);
 
-  const addTodo = () => {
+  // Helper function to check if two dates are the same day
+  const isSameDay = (date1: Date, date2: Date) => {
+    return date1.toDateString() === date2.toDateString();
+  };
+
+  // Filter todos for selected date
+  const todosForDate = todos.filter(todo => isSameDay(todo.dueDate, selectedDate));
+  const activeTodos = todosForDate.filter(todo => !todo.completed);
+  const completedTodos = todosForDate.filter(todo => todo.completed);
+
+  const handleAddTodo = () => {
     if (newTodo.trim()) {
-      const todo: Todo = {
-        id: Date.now().toString(),
-        text: newTodo.trim(),
-        completed: false,
-        createdAt: new Date(),
-      };
-      setTodos([todo, ...todos]);
+      addTodo(newTodo, new Date(newTodoDueDate));
       setNewTodo('');
+      setNewTodoDueDate(selectedDate.toISOString().split('T')[0]);
     }
   };
 
@@ -44,9 +40,6 @@ export const TodoList = () => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
-  const activeTodos = todos.filter(todo => !todo.completed);
-  const completedTodos = todos.filter(todo => todo.completed);
-
   return (
     <Card className="h-fit">
       <CardHeader>
@@ -55,22 +48,33 @@ export const TodoList = () => {
           To-Do List
         </CardTitle>
         <CardDescription>
-          {activeTodos.length} active tasks, {completedTodos.length} completed
+          {selectedDate.toLocaleDateString()} - {activeTodos.length} active, {completedTodos.length} completed
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Add new todo */}
-        <div className="flex gap-2">
-          <Input
-            placeholder="Add a new task..."
-            value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addTodo()}
-            className="flex-1"
-          />
-          <Button onClick={addTodo} size="sm">
-            <Plus className="h-4 w-4" />
-          </Button>
+        <div className="space-y-2">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Add a new task..."
+              value={newTodo}
+              onChange={(e) => setNewTodo(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
+              className="flex-1"
+            />
+            <Button onClick={handleAddTodo} size="sm">
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4 text-gray-500" />
+            <Input
+              type="date"
+              value={newTodoDueDate}
+              onChange={(e) => setNewTodoDueDate(e.target.value)}
+              className="w-auto"
+            />
+          </div>
         </div>
 
         {/* Active todos */}
@@ -117,6 +121,13 @@ export const TodoList = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {todosForDate.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            <ListTodo className="h-12 w-12 mx-auto mb-3 opacity-30" />
+            <p>No tasks for {selectedDate.toLocaleDateString()}</p>
           </div>
         )}
       </CardContent>

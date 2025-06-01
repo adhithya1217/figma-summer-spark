@@ -1,50 +1,31 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { StickyNote, Plus } from "lucide-react";
-
-interface NoteItem {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { StickyNote, Plus, Calendar } from "lucide-react";
+import { useDashboard } from "@/contexts/DashboardContext";
 
 export const Notes = () => {
-  const [notes, setNotes] = useState<NoteItem[]>([
-    {
-      id: '1',
-      title: 'Meeting Ideas',
-      content: 'Discuss quarterly goals\nReview budget allocations\nPlan team building event',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '2',
-      title: 'Project Thoughts',
-      content: 'Consider using React for the frontend\nImplement proper error handling\nAdd unit tests',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ]);
-  
+  const { selectedDate, notes, setNotes, addNote } = useDashboard();
   const [newNote, setNewNote] = useState({ title: '', content: '' });
+  const [noteDate, setNoteDate] = useState(selectedDate.toISOString().split('T')[0]);
   const [isAdding, setIsAdding] = useState(false);
 
-  const addNote = () => {
+  // Helper function to check if two dates are the same day
+  const isSameDay = (date1: Date, date2: Date) => {
+    return date1.toDateString() === date2.toDateString();
+  };
+
+  // Filter notes for selected date
+  const notesForDate = notes.filter(note => isSameDay(note.date, selectedDate));
+
+  const handleAddNote = () => {
     if (newNote.title.trim() && newNote.content.trim()) {
-      const note: NoteItem = {
-        id: Date.now().toString(),
-        title: newNote.title.trim(),
-        content: newNote.content.trim(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      setNotes([note, ...notes]);
+      addNote(newNote.title, newNote.content, new Date(noteDate));
       setNewNote({ title: '', content: '' });
+      setNoteDate(selectedDate.toISOString().split('T')[0]);
       setIsAdding(false);
     }
   };
@@ -63,7 +44,7 @@ export const Notes = () => {
               Notes
             </CardTitle>
             <CardDescription>
-              Quick notes and ideas
+              Notes for {selectedDate.toLocaleDateString()} ({notesForDate.length} notes)
             </CardDescription>
           </div>
           <Button onClick={() => setIsAdding(true)} size="sm">
@@ -89,8 +70,17 @@ export const Notes = () => {
                   onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
                   rows={3}
                 />
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-gray-500" />
+                  <Input
+                    type="date"
+                    value={noteDate}
+                    onChange={(e) => setNoteDate(e.target.value)}
+                    className="w-auto"
+                  />
+                </div>
                 <div className="flex gap-2">
-                  <Button onClick={addNote} size="sm">Save</Button>
+                  <Button onClick={handleAddNote} size="sm">Save</Button>
                   <Button onClick={() => setIsAdding(false)} variant="outline" size="sm">
                     Cancel
                   </Button>
@@ -102,7 +92,7 @@ export const Notes = () => {
 
         {/* Notes grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {notes.map((note) => (
+          {notesForDate.map((note) => (
             <Card key={note.id} className="h-fit">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
@@ -122,17 +112,17 @@ export const Notes = () => {
                   {note.content}
                 </p>
                 <p className="text-xs text-gray-500 mt-3">
-                  {note.updatedAt.toLocaleDateString()}
+                  {note.date.toLocaleDateString()}
                 </p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {notes.length === 0 && !isAdding && (
+        {notesForDate.length === 0 && !isAdding && (
           <div className="text-center py-8 text-gray-500">
             <StickyNote className="h-12 w-12 mx-auto mb-3 opacity-30" />
-            <p>No notes yet. Click "Add Note" to get started!</p>
+            <p>No notes for {selectedDate.toLocaleDateString()}. Click "Add Note" to get started!</p>
           </div>
         )}
       </CardContent>
