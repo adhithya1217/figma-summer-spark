@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Note, Plus } from "lucide-react";
+import { StickyNote, Plus } from "lucide-react";
 
 interface NoteItem {
   id: string;
@@ -60,7 +59,7 @@ export const Notes = () => {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <Note className="h-5 w-5" />
+              <StickyNote className="h-5 w-5" />
               Notes
             </CardTitle>
             <CardDescription>
@@ -132,7 +131,7 @@ export const Notes = () => {
 
         {notes.length === 0 && !isAdding && (
           <div className="text-center py-8 text-gray-500">
-            <Note className="h-12 w-12 mx-auto mb-3 opacity-30" />
+            <StickyNote className="h-12 w-12 mx-auto mb-3 opacity-30" />
             <p>No notes yet. Click "Add Note" to get started!</p>
           </div>
         )}
